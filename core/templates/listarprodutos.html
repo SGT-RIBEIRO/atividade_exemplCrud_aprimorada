@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block grafico %}
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Gênero', 'Quant Produto'],
+                {% for dado in tabela %}
+
+                    ['{{ dado.genero }}', {{ dado.quant }}],
+
+                {% endfor %}
+            ]);
+
+            var options = {
+                title: 'Quantidade de Produtos por gênero'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+
+{% endblock %}
+
+{% block conteudo %}
+    <h1>Lista de Produtos</h1>
+
+
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Cod</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th>Ação</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in produtos %}
+            <tr>
+                <td>{{ p.id }}</td>
+                <td>{{ p.descricao }}</td>
+                <td>{{ p.preco }}</td>
+                <td>{{ p.quantidade }}</td>
+                <td>
+                    <form action="{% url 'delete_produto' pk=p.id %}" method="post">
+                        {% csrf_token %}&nbsp;&nbsp;
+                        <a href="{% url 'update_produto' pk=p.id %}" class="btn btn-primary"
+                           data-toggle="tooltip"
+                           data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>
+
+                        <button type="submit" class="btn btn-danger" data-toggle="tooltip"
+                                data-placement="bottom" title="Apagar"><i
+                                class="fa fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="text-center">
+        <h1 style="padding-top: 50px">Gráfico de produtos por gênero</h1>
+        <div id="piechart" style="width: 900px; height: 500px;"></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block conteudo %}
+
+    <div class="container">
+    {% bootstrap_css %}
+    <div class="container">
+    <h2 style="padding: 20px">Altere o(s) o(s) campos que deseja no produto</h2>
+        {% bootstrap_messages %}
+        <form style="text-align: justify; padding: 30px" action="{% url 'update_produto' object.id%}" method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">Alterar</button>
+            {% endbuttons %}
+            <!--<input class="form-control" style="padding: 5px; color: chocolate" type="submit" value="Enviar">-->
+        </form>
+    </div>
+    {% bootstrap_javascript jquery='full' %}
+</div>
+
+{% endblock %}

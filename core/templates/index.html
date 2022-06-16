@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+    <h1>
+        Crud Produtos
+    </h1>
+    <br>
+    <p>
+        <a href="{% url 'cadastro_produto' %}" class="btn btn-primary">Adicionar Produtos</a>
+    </p>
+
+
+    <p>
+        <a href="{% url 'listarprod' %}" class="btn btn-success">Listar Produtos</a>
+    </p>
+
+{% endblock %}
