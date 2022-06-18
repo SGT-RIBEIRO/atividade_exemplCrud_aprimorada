@@ -3,20 +3,21 @@ from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib import messages
 
+from captcha.fields import CaptchaField
 import base64
 from io import BytesIO
-from matplotlib import pyplot as ptl
 
 from core.models import Produto
 
 from django.utils import translation
 from django.utils.translation import gettext as _
 
+
 class IndexView(TemplateView):
     template_name = 'index.html'
-    
+
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)        
+        context = super().get_context_data(*args, **kwargs)
         context['language'] = translation.get_language()
         return context
 
@@ -51,6 +52,12 @@ class CadastroProdutoView(CreateView):
     fields = '__all__'
     template_name = 'cadastrar_produto.html'
     success_url = reverse_lazy('cadastro_produto')
+    captcha = CaptchaField()
+
+    def get_form(self, form_class=None):
+        form = super(CadastroProdutoView, self).get_form(form_class)
+        form.fields['captcha'] = self.captcha
+        return form
 
     def form_valid(self, form, *args, **kwargs):
         messages.success(self.request, _('Produto salvo com sucesso!!'))
@@ -61,9 +68,11 @@ class CadastroProdutoView(CreateView):
         return super(CadastroProdutoView, self).form_invalid(form, *args, *kwargs)
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)        
+        context = super().get_context_data(*args, **kwargs)
         context['language'] = translation.get_language()
         return context
+
+
 
 
 class UpdateProdutoView(UpdateView):
@@ -73,7 +82,7 @@ class UpdateProdutoView(UpdateView):
     success_url = reverse_lazy('listarprod')
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)        
+        context = super().get_context_data(*args, **kwargs)
         context['language'] = translation.get_language()
         return context
 
@@ -84,6 +93,6 @@ class DeleteProdutoView(DeleteView):
     template_name = 'confirm_delete_produto.html'
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)        
+        context = super().get_context_data(*args, **kwargs)
         context['language'] = translation.get_language()
         return context
