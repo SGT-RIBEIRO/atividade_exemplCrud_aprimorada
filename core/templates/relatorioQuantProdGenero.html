@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block grafico %}
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Gênero', 'Quant Produto'],
+                {% for dado in tabela %}
+
+                    ['{{ dado.genero }}', {{ dado.quant }}],
+
+                {% endfor %}
+            ]);
+
+            let phrase = "{% trans 'Quantidade de Produtos por gênero' %}";            
+            var options = {
+                title: phrase
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+
+{% endblock %}
+
+{% block conteudo %}
+    <div class="text-center">
+        <h1 style="padding-top: 50px">{% trans 'Gráfico de produtos por gênero' %}</h1>
+        <div id="piechart" style="width: 900px; height: 500px;"></div>
+    </div>
+{% endblock %}

@@ -30,10 +30,21 @@ class ListarProdutosView(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        produtos = Produto.objects.order_by('descricao').all()
+        context['language'] = translation.get_language()
+        return context
+
+
+class QuantProdutosGeneroView(ListView):
+    model = Produto
+    template_name = 'relatorioQuantProdGenero.html'
+    queryset = Produto.objects.all()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(QuantProdutosGeneroView, self).get_context_data(*args, **kwargs)
+        produtosGenero = Produto.objects.order_by('descricao').all()
         tabela = []
         cont = 1
-        for p in produtos:
+        for p in produtosGenero:
             tabela.append(
                 {
                     'genero': p.genero,
@@ -43,6 +54,29 @@ class ListarProdutosView(ListView):
             cont += 1
 
         context['tabela'] = tabela
+        context['language'] = translation.get_language()
+        return context
+
+
+class QuantProdutosView(ListView):
+    model = Produto
+    template_name = 'relatorioQuantProdutos.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(QuantProdutosView, self).get_context_data(*args, **kwargs)
+        QuantProdutos = Produto.objects.order_by('descricao').all()
+        tabela2 = []
+        cont2 = 1
+        for q in QuantProdutos:
+            tabela2.append(
+                {
+                    'genero': q.descricao,
+                    'quant': q.quantidade
+                }
+            )
+            cont2 += 1
+
+        context['tabela2'] = tabela2
         context['language'] = translation.get_language()
         return context
 
@@ -71,8 +105,6 @@ class CadastroProdutoView(CreateView):
         context = super().get_context_data(*args, **kwargs)
         context['language'] = translation.get_language()
         return context
-
-
 
 
 class UpdateProdutoView(UpdateView):

@@ -19,7 +19,7 @@
                 {% endfor %}
             ]);
 
-            let phrase = "{% trans 'Quantidade de Produtos por gênero' %}";            
+            let phrase = "{% trans 'Quantidade de Produtos por gênero' %}";
             var options = {
                 title: phrase
             };
@@ -71,7 +71,45 @@
         </tbody>
     </table>
     <div class="text-center">
-        <h1 style="padding-top: 50px">{% trans 'Gráfico de produtos por gênero' %}</h1>
-        <div id="piechart" style="width: 900px; height: 500px;"></div>
+        <h1 style="padding-top: 50px">{% trans 'Relatórios Gráficos' %}</h1>
+
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{% trans 'Cod' %}</th>
+                <th>{% trans 'Tipo' %}</th>
+                <th>{% trans 'Ação' %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td style="font-weight: bold; font-size: 18px">1</td>
+                <td style="font-weight: bold; font-size: 18px">{% trans 'Quantidade de produto por gênero' %}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a href="{% url 'quantprodgenero' %}"
+                           class="btn btn-info" data-toggle="tooltip" data-placement="bottom"
+                           title="Visualizar"><i class="fa fa-eye"></i></a>
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td style="font-weight: bold; font-size: 18px">2</td>
+                <td style="font-weight: bold; font-size: 18px">{% trans 'Quantidade de produto por descrição' %}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a href="{% url 'quantprod' %}"
+                           class="btn btn-info" data-toggle="tooltip" data-placement="bottom"
+                           title="Visualizar"><i class="fa fa-eye"></i></a>
+                    </div>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+
     </div>
+
 {% endblock %}
