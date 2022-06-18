@@ -56,7 +56,7 @@ class CadastroProdutoView(CreateView):
 
     def get_form(self, form_class=None):
         form = super(CadastroProdutoView, self).get_form(form_class)
-        form.fields['captcha'] = self.captcha
+        form.fields['digite_o_que_aparece_na_imagem_'] = self.captcha
         return form
 
     def form_valid(self, form, *args, **kwargs):
