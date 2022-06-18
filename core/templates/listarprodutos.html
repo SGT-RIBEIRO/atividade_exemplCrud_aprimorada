@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block grafico %}
 
@@ -18,8 +19,9 @@
                 {% endfor %}
             ]);
 
+            let phrase = "{% trans 'Quantidade de Produtos por gênero' %}";            
             var options = {
-                title: 'Quantidade de Produtos por gênero'
+                title: phrase
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -31,18 +33,18 @@
 {% endblock %}
 
 {% block conteudo %}
-    <h1>Lista de Produtos</h1>
+    <h1>{% trans 'Lista de Produtos' %}</h1>
 
 
 
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Cod</th>
-            <th>Descrição</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-            <th>Ação</th>
+            <th>{% trans 'Cod' %}</th>
+            <th>{% trans 'Descrição' %}</th>
+            <th>{% trans 'Preço' %}</th>
+            <th>{% trans 'Quantidade' %}</th>
+            <th>{% trans 'Ação' %}</th>
         </tr>
         </thead>
         <tbody>
@@ -57,10 +59,10 @@
                         {% csrf_token %}&nbsp;&nbsp;
                         <a href="{% url 'update_produto' pk=p.id %}" class="btn btn-primary"
                            data-toggle="tooltip"
-                           data-placement="bottom" title="Editar"><i class="fa fa-edit"></i></a>
+                           data-placement="bottom" title="{% trans 'Editar' %}"><i class="fa fa-edit"></i></a>
 
                         <button type="submit" class="btn btn-danger" data-toggle="tooltip"
-                                data-placement="bottom" title="Apagar"><i
+                                data-placement="bottom" title="{% trans 'Apagar' %}"><i
                                 class="fa fa-trash"></i></button>
                     </form>
                 </td>
@@ -69,7 +71,7 @@
         </tbody>
     </table>
     <div class="text-center">
-        <h1 style="padding-top: 50px">Gráfico de produtos por gênero</h1>
+        <h1 style="padding-top: 50px">{% trans 'Gráfico de produtos por gênero' %}</h1>
         <div id="piechart" style="width: 900px; height: 500px;"></div>
     </div>
 {% endblock %}

@@ -9,9 +9,16 @@ from matplotlib import pyplot as ptl
 
 from core.models import Produto
 
+from django.utils import translation
+from django.utils.translation import gettext as _
 
 class IndexView(TemplateView):
     template_name = 'index.html'
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)        
+        context['language'] = translation.get_language()
+        return context
 
 
 class ListarProdutosView(ListView):
@@ -35,6 +42,7 @@ class ListarProdutosView(ListView):
             cont += 1
 
         context['tabela'] = tabela
+        context['language'] = translation.get_language()
         return context
 
 
@@ -45,12 +53,17 @@ class CadastroProdutoView(CreateView):
     success_url = reverse_lazy('cadastro_produto')
 
     def form_valid(self, form, *args, **kwargs):
-        messages.success(self.request, 'Produto salvo com sucesso!!')
+        messages.success(self.request, _('Produto salvo com sucesso!!'))
         return super(CadastroProdutoView, self).form_valid(form, *args, *kwargs)
 
     def form_invalid(self, form, *args, **kwargs):
-        messages.error(self.request, 'Erro ao salvar produto!!')
+        messages.error(self.request, _('Erro ao salvar produto!!'))
         return super(CadastroProdutoView, self).form_invalid(form, *args, *kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)        
+        context['language'] = translation.get_language()
+        return context
 
 
 class UpdateProdutoView(UpdateView):
@@ -59,8 +72,18 @@ class UpdateProdutoView(UpdateView):
     fields = '__all__'
     success_url = reverse_lazy('listarprod')
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)        
+        context['language'] = translation.get_language()
+        return context
+
 
 class DeleteProdutoView(DeleteView):
     model = Produto
     success_url = reverse_lazy('listarprod')
     template_name = 'confirm_delete_produto.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)        
+        context['language'] = translation.get_language()
+        return context
